@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model AdminUser {
+  id           Int      @id @default(autoincrement())
+  name         String   @default("Admin")
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("admin_users")
+}
+
+model Enquiry {
+  id        Int      @id @default(autoincrement())
+  name      String
+  company   String?
+  email     String
+  phone     String?
+  service   String?
+  budget    String?
+  message   String
+  status    String   @default("new")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("enquiries")
+}
+
+model JobApplication {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String
+  phone       String?
+  position    String?
+  experience  String?
+  coverLetter String?  @map("cover_letter")
+  cvUrl       String?  @map("cv_url")
+  status      String   @default("new")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("job_applications")
+}
+
+model PortfolioProject {
+  id          Int      @id @default(autoincrement())
+  title       String
+  category    String
+  description String?
+  imageUrl    String?  @map("image_url")
+  location    String?
+  year        String?
+  featured    Boolean  @default(false)
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("portfolio_projects")
+}
+
+model JobOpening {
+  id           Int      @id @default(autoincrement())
+  title        String
+  department   String?
+  location     String   @default("Dubai, UAE")
+  type         String   @default("Full-time")
+  description  String?
+  requirements String?
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("job_openings")
+}
+
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("site_settings")
+}
+
+model Service {
+  id        Int      @id @default(autoincrement())
+  title     String
+  desc      String
+  slug      String   @unique
+  tags      String   @default("")
+  theme     String   @default("light")
+  imageUrl  String?  @map("image_url")
+  active    Boolean  @default(true)
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("services")
+}
+
+model Client {
+  id        Int      @id @default(autoincrement())
+  name      String
+  logoUrl   String   @map("logo_url")
+  website   String?
+  active    Boolean  @default(true)
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("clients")
+}
