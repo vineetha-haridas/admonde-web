@@ -97,6 +97,22 @@ model Service {
   sortOrder Int      @default(0) @map("sort_order")
   createdAt DateTime @default(now()) @map("created_at")
 
+  // Detail page content (src/app/services/[slug])
+  heading    String @default("")
+  paragraph1 String @default("")
+  paragraph2 String @default("")
+  features   String @default("") // comma-separated, full checklist shown on the detail page
+  ctaHeading String @default("") @map("cta_heading")
+  ctaText    String @default("") @map("cta_text")
+
+  contentImageUrl       String? @map("content_image_url")
+  contentImage2Url      String? @map("content_image_2_url")
+  contentImage2Title    String? @map("content_image_2_title")
+  contentImage2Location String? @map("content_image_2_location")
+  contentImage3Url      String? @map("content_image_3_url")
+  contentImage3Title    String? @map("content_image_3_title")
+  contentImage3Location String? @map("content_image_3_location")
+
   @@map("services")
 }
 

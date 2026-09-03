@@ -1,111 +1,73 @@
-"use client";
+export const dynamic = "force-dynamic";
 
-import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { prisma } from "@/lib/prisma";
+import { PortfolioGrid, type PortfolioItem } from "@/components/portfolio/PortfolioGrid";
 
-const categories = [
-  "All",
-  "Events & Exhibitions",
-  "Store & Office Branding",
-  "Print & Production",
-  "POP / POS Displays",
-  "Fleet & Uniform Branding",
-];
-
-const projects = [
+const staticProjects: PortfolioItem[] = [
   {
+    id: -1,
     title: "LIV Golf Event Signage",
-    client: "LIV Golf, Saudi Arabia",
-    category: "Events & Exhibitions",
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=900&q=80",
+    category: "Exhibition & Events",
+    imageUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=900&q=80",
+    location: "LIV Golf, Saudi Arabia",
     year: "2024",
   },
   {
+    id: -2,
     title: "LG Retail Brand Experience",
-    client: "LG Electronics, KSA",
-    category: "Store & Office Branding",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&q=80",
+    category: "Interior Fit-Out",
+    imageUrl: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&q=80",
+    location: "LG Electronics, KSA",
     year: "2024",
   },
   {
+    id: -3,
     title: "Samsung POP Display Campaign",
-    client: "Samsung, GCC",
-    category: "POP / POS Displays",
-    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=900&q=80",
+    category: "Print & Branding",
+    imageUrl: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=900&q=80",
+    location: "Samsung, GCC",
     year: "2024",
   },
   {
+    id: -4,
     title: "Bupa Arabia Office Branding",
-    client: "Bupa Arabia, Saudi Arabia",
-    category: "Store & Office Branding",
-    image: "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=900&q=80",
+    category: "Interior Fit-Out",
+    imageUrl: "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=900&q=80",
+    location: "Bupa Arabia, Saudi Arabia",
     year: "2024",
   },
   {
-    title: "Decathlon In-Store Displays",
-    client: "Decathlon, KSA",
-    category: "POP / POS Displays",
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900&q=80",
-    year: "2024",
-  },
-  {
-    title: "Nike Retail POP Campaign",
-    client: "Nike, Saudi Arabia",
-    category: "POP / POS Displays",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80",
-    year: "2023",
-  },
-  {
+    id: -5,
     title: "Corporate Fleet Wrap",
-    client: "National Fleet, Saudi Arabia",
-    category: "Fleet & Uniform Branding",
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=80",
+    category: "Fleet & Uniform",
+    imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=80",
+    location: "National Fleet, Saudi Arabia",
     year: "2023",
   },
   {
+    id: -6,
     title: "Almarai Brand Activation",
-    client: "Almarai, KSA",
-    category: "Events & Exhibitions",
-    image: "https://images.unsplash.com/photo-1530026405186-ed1f139313f0?w=900&q=80",
+    category: "Exhibition & Events",
+    imageUrl: "https://images.unsplash.com/photo-1530026405186-ed1f139313f0?w=900&q=80",
+    location: "Almarai, KSA",
     year: "2023",
-  },
-  {
-    title: "TCL Retail Signage Rollout",
-    client: "TCL, GCC",
-    category: "Store & Office Branding",
-    image: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=900&q=80",
-    year: "2023",
-  },
-  {
-    title: "Corporate Print Campaign",
-    client: "Tamer Group, KSA",
-    category: "Print & Production",
-    image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&q=80",
-    year: "2022",
-  },
-  {
-    title: "Uniform & Staff Branding",
-    client: "Nahdi Medical, Saudi Arabia",
-    category: "Fleet & Uniform Branding",
-    image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=80",
-    year: "2022",
-  },
-  {
-    title: "Art Jameel Event Installation",
-    client: "Art Jameel, Saudi Arabia",
-    category: "Events & Exhibitions",
-    image: "https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=900&q=80",
-    year: "2022",
   },
 ];
 
-export default function PortfolioPage() {
-  const [active, setActive] = useState("All");
+export default async function PortfolioPage() {
+  let dbProjects: PortfolioItem[] = [];
+  try {
+    dbProjects = await prisma.portfolioProject.findMany({
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+    });
+  } catch {
+    // DB unreachable — fall back to static data below
+  }
 
-  const filtered =
-    active === "All" ? projects : projects.filter((p) => p.category === active);
+  const projects = dbProjects.length > 0 ? dbProjects : staticProjects;
+  const categories = Array.from(new Set(projects.map((p) => p.category))).filter(Boolean);
 
   return (
     <div className="bg-white">
@@ -132,58 +94,7 @@ export default function PortfolioPage() {
       {/* ── Gallery ── */}
       <section className="px-3 sm:px-5 lg:px-8 2xl:px-10 3xl:px-14 py-3">
         <div className="max-w-7xl mx-auto">
-          {/* Filters */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActive(cat)}
-                className={cn(
-                  "px-4 py-2 text-[11px] font-semibold tracking-[0.1em] uppercase rounded-lg transition-all duration-200",
-                  active === cat
-                    ? "bg-[#111111] text-white"
-                    : "text-[#888888] border border-[#D8D5CE] hover:text-[#111111] hover:border-[#999999]"
-                )}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {/* Grid */}
-          {filtered.length > 0 ? (
-            <div className="grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-4">
-              {filtered.map((project, i) => (
-                <div key={`${project.title}-${i}`} className="group">
-                  <div
-                    className="overflow-hidden rounded-2xl bg-[#E8E4DC] mb-3"
-                    style={{ aspectRatio: "4/3" }}
-                  >
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                    />
-                  </div>
-                  <div className="flex items-start justify-between px-1">
-                    <div>
-                      <span className="font-heading font-medium text-[#111111] text-[13px] sm:text-[14px] block">
-                        {project.title}
-                      </span>
-                      <span className="text-[#888888] text-[12px]">{project.client}</span>
-                    </div>
-                    <span className="text-[#AAAAAA] text-[11px] font-medium shrink-0 ml-2 mt-0.5">
-                      {project.year}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-24 text-[#AAAAAA] text-[13px]">
-              No projects in this category.
-            </div>
-          )}
+          <PortfolioGrid projects={projects} categories={categories} />
         </div>
       </section>
 

@@ -8,10 +8,87 @@ import { toast } from "sonner";
 type Service = {
   id: number; title: string; desc: string; slug: string; tags: string;
   theme: string; imageUrl: string | null; active: boolean; sortOrder: number; createdAt: string;
+  heading: string; paragraph1: string; paragraph2: string; features: string;
+  ctaHeading: string; ctaText: string;
+  contentImageUrl: string | null;
+  contentImage2Url: string | null; contentImage2Title: string | null; contentImage2Location: string | null;
+  contentImage3Url: string | null; contentImage3Title: string | null; contentImage3Location: string | null;
 };
 type FormData = Omit<Service, "id" | "createdAt">;
 
-const EMPTY: FormData = { title: "", desc: "", slug: "", tags: "", theme: "light", imageUrl: "", active: true, sortOrder: 0 };
+const EMPTY: FormData = {
+  title: "", desc: "", slug: "", tags: "", theme: "light", imageUrl: "", active: true, sortOrder: 0,
+  heading: "", paragraph1: "", paragraph2: "", features: "", ctaHeading: "", ctaText: "",
+  contentImageUrl: "", contentImage2Url: "", contentImage2Title: "", contentImage2Location: "",
+  contentImage3Url: "", contentImage3Title: "", contentImage3Location: "",
+};
+
+function ImageUploadBox({
+  label, value, onChange,
+}: {
+  label: string; value: string; onChange: (url: string) => void;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState("");
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError("");
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      fd.append("folder", "services");
+      const res = await fetch("/api/upload/image", { method: "POST", body: fd });
+      const data = await res.json();
+      if (!res.ok) { setError(data.error || "Upload failed"); toast.error(data.error || "Image upload failed"); }
+      else { onChange(data.url); toast.success("Image uploaded"); }
+    } catch {
+      setError("Upload failed. Please try again.");
+      toast.error("Upload failed. Please try again.");
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  }
+
+  return (
+    <div>
+      <label className="block text-[#888888] text-[11px] uppercase tracking-widest mb-2">{label}</label>
+      {value ? (
+        <div className="relative rounded-xl overflow-hidden h-28 bg-[#F7F5F2]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={value} alt="Preview" className="w-full h-full object-cover" />
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            className="absolute top-2 right-2 w-6 h-6 rounded-full bg-white/90 border border-[#E0DDD8] flex items-center justify-center text-[#AAAAAA] hover:text-red-500 transition-colors"
+          >
+            <X className="w-3 h-3" />
+          </button>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => fileRef.current?.click()}
+          disabled={uploading}
+          className="w-full h-28 rounded-xl border-2 border-dashed border-[#E0DDD8] hover:border-[#AAAAAA] flex flex-col items-center justify-center gap-1.5 transition-colors text-[#AAAAAA] hover:text-[#555555]"
+        >
+          {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : (
+            <>
+              <Upload className="w-4 h-4" />
+              <span className="text-[10px]">Click to upload</span>
+            </>
+          )}
+        </button>
+      )}
+      {error && <p className="text-red-500 text-[11px] mt-1">{error}</p>}
+      <input ref={fileRef} type="file" accept="image/jpeg,image/jpg,image/png,image/webp" className="hidden" onChange={handleUpload} />
+    </div>
+  );
+}
 
 const THEME_STYLES = {
   light: { bg: "#F5F3EF", text: "#111111", muted: "#AAAAAA" },
@@ -28,9 +105,6 @@ export default function ServicesAdminPage() {
   const [modal, setModal] = useState<{ open: boolean; editing: Service | null }>({ open: false, editing: null });
   const [form, setForm] = useState<FormData>(EMPTY);
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [uploadError, setUploadError] = useState("");
-  const fileRef = useRef<HTMLInputElement>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -44,36 +118,19 @@ export default function ServicesAdminPage() {
 
   function openAdd() {
     setForm(EMPTY);
-    setUploadError("");
     setModal({ open: true, editing: null });
   }
 
   function openEdit(s: Service) {
-    setForm({ title: s.title, desc: s.desc, slug: s.slug, tags: s.tags, theme: s.theme, imageUrl: s.imageUrl ?? "", active: s.active, sortOrder: s.sortOrder });
-    setUploadError("");
+    setForm({
+      title: s.title, desc: s.desc, slug: s.slug, tags: s.tags, theme: s.theme, imageUrl: s.imageUrl ?? "", active: s.active, sortOrder: s.sortOrder,
+      heading: s.heading, paragraph1: s.paragraph1, paragraph2: s.paragraph2, features: s.features,
+      ctaHeading: s.ctaHeading, ctaText: s.ctaText,
+      contentImageUrl: s.contentImageUrl ?? "",
+      contentImage2Url: s.contentImage2Url ?? "", contentImage2Title: s.contentImage2Title ?? "", contentImage2Location: s.contentImage2Location ?? "",
+      contentImage3Url: s.contentImage3Url ?? "", contentImage3Title: s.contentImage3Title ?? "", contentImage3Location: s.contentImage3Location ?? "",
+    });
     setModal({ open: true, editing: s });
-  }
-
-  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setUploading(true);
-    setUploadError("");
-    try {
-      const fd = new FormData();
-      fd.append("file", file);
-      fd.append("folder", "services");
-      const res = await fetch("/api/upload/image", { method: "POST", body: fd });
-      const data = await res.json();
-      if (!res.ok) { setUploadError(data.error || "Upload failed"); toast.error(data.error || "Image upload failed"); }
-      else { setForm((f) => ({ ...f, imageUrl: data.url })); toast.success("Image uploaded"); }
-    } catch {
-      setUploadError("Upload failed. Please try again.");
-      toast.error("Upload failed. Please try again.");
-    } finally {
-      setUploading(false);
-      if (fileRef.current) fileRef.current.value = "";
-    }
   }
 
   async function save() {
@@ -198,7 +255,7 @@ export default function ServicesAdminPage() {
       {/* Modal */}
       {modal.open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="w-full max-w-lg bg-white border border-[#E8E4DC] rounded-2xl shadow-xl max-h-[90vh] overflow-y-auto">
+          <div className="w-full max-w-2xl bg-white border border-[#E8E4DC] rounded-2xl shadow-xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between px-6 py-4 border-b border-[#E8E4DC] sticky top-0 bg-white z-10">
               <h2 className="text-[#111111] font-semibold text-sm">{modal.editing ? "Edit Service" : "Add Service"}</h2>
               <button onClick={() => setModal({ open: false, editing: null })} className="text-[#AAAAAA] hover:text-[#111111] transition-colors"><X className="w-4 h-4" /></button>
@@ -206,37 +263,11 @@ export default function ServicesAdminPage() {
 
             <div className="p-6 space-y-4">
               {/* Image upload */}
-              <div>
-                <label className="block text-[#888888] text-[11px] uppercase tracking-widest mb-2">Service Image</label>
-                {form.imageUrl ? (
-                  <div className="relative rounded-xl overflow-hidden h-36 bg-[#F7F5F2]">
-                    <img src={form.imageUrl} alt="Preview" className="w-full h-full object-cover" />
-                    <button
-                      onClick={() => setForm((f) => ({ ...f, imageUrl: "" }))}
-                      className="absolute top-2 right-2 w-6 h-6 rounded-full bg-white/90 border border-[#E0DDD8] flex items-center justify-center text-[#AAAAAA] hover:text-red-500 transition-colors"
-                    >
-                      <X className="w-3 h-3" />
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => fileRef.current?.click()}
-                    disabled={uploading}
-                    className="w-full h-36 rounded-xl border-2 border-dashed border-[#E0DDD8] hover:border-[#AAAAAA] flex flex-col items-center justify-center gap-2 transition-colors text-[#AAAAAA] hover:text-[#555555]"
-                  >
-                    {uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
-                      <>
-                        <Upload className="w-5 h-5" />
-                        <span className="text-[11px]">Click to upload service image</span>
-                        <span className="text-[10px] text-[#CCCCCC]">PNG, JPG, WebP · max 8MB</span>
-                      </>
-                    )}
-                  </button>
-                )}
-                {uploadError && <p className="text-red-500 text-[11px] mt-1">{uploadError}</p>}
-                <input ref={fileRef} type="file" accept="image/jpeg,image/jpg,image/png,image/webp" className="hidden" onChange={handleUpload} />
-              </div>
+              <ImageUploadBox
+                label="Service Image (used on the overview card)"
+                value={form.imageUrl ?? ""}
+                onChange={(url) => setForm((f) => ({ ...f, imageUrl: url }))}
+              />
 
               {/* Title */}
               <div>
@@ -282,12 +313,12 @@ export default function ServicesAdminPage() {
               {/* Tags */}
               <div>
                 <label className="block text-[#888888] text-[11px] uppercase tracking-widest mb-1.5">
-                  Tags <span className="text-[#CCCCCC] normal-case tracking-normal text-[10px]">(comma-separated)</span>
+                  Tags <span className="text-[#CCCCCC] normal-case tracking-normal text-[10px]">(separated by |, shown on the overview card)</span>
                 </label>
                 <input
                   value={form.tags}
                   onChange={(e) => setForm((f) => ({ ...f, tags: e.target.value }))}
-                  placeholder="Retail, Office, Hospitality, Showroom"
+                  placeholder="Retail | Office | Hospitality | Showroom"
                   className={inputCls}
                 />
               </div>
@@ -333,6 +364,126 @@ export default function ServicesAdminPage() {
                       <span className={cn("absolute top-0.5 left-0 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200", form.active ? "translate-x-6.5" : "translate-x-0.5")} />
                     </button>
                     <span className={cn("text-sm font-medium", form.active ? "text-[#111111]" : "text-[#999999]")}>{form.active ? "Show" : "Hide"}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Detail page content */}
+              <div className="pt-4 border-t border-[#EEEBE6]">
+                <p className="text-[#111111] text-xs font-semibold uppercase tracking-widest mb-4">Detail Page — /services/{form.slug || "…"}</p>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-[#888888] text-[11px] uppercase tracking-widest mb-1.5">Section Heading</label>
+                    <input
+                      value={form.heading}
+                      onChange={(e) => setForm((f) => ({ ...f, heading: e.target.value }))}
+                      placeholder="Spaces that Speak Your Brand"
+                      className={inputCls}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[#888888] text-[11px] uppercase tracking-widest mb-1.5">Main Paragraph</label>
+                    <textarea
+                      value={form.paragraph1}
+                      onChange={(e) => setForm((f) => ({ ...f, paragraph1: e.target.value }))}
+                      rows={3}
+                      placeholder="Main descriptive paragraph…"
+                      className={inputCls + " resize-none"}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[#888888] text-[11px] uppercase tracking-widest mb-1.5">Secondary Paragraph</label>
+                    <textarea
+                      value={form.paragraph2}
+                      onChange={(e) => setForm((f) => ({ ...f, paragraph2: e.target.value }))}
+                      rows={2}
+                      placeholder="Supporting paragraph, e.g. client proof…"
+                      className={inputCls + " resize-none"}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[#888888] text-[11px] uppercase tracking-widest mb-1.5">
+                      Detailed Feature Checklist <span className="text-[#CCCCCC] normal-case tracking-normal text-[10px]">(separated by |)</span>
+                    </label>
+                    <textarea
+                      value={form.features}
+                      onChange={(e) => setForm((f) => ({ ...f, features: e.target.value }))}
+                      rows={2}
+                      placeholder="Indoor & Outdoor Signage | Interior Wall Graphics | 3D Interior Design"
+                      className={inputCls + " resize-none"}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[#888888] text-[11px] uppercase tracking-widest mb-1.5">CTA Heading</label>
+                      <input
+                        value={form.ctaHeading}
+                        onChange={(e) => setForm((f) => ({ ...f, ctaHeading: e.target.value }))}
+                        placeholder="Transform Your Space Today."
+                        className={inputCls}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[#888888] text-[11px] uppercase tracking-widest mb-1.5">CTA Text</label>
+                      <input
+                        value={form.ctaText}
+                        onChange={(e) => setForm((f) => ({ ...f, ctaText: e.target.value }))}
+                        placeholder="Share your requirements…"
+                        className={inputCls}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="text-[#888888] text-[11px] uppercase tracking-widest mb-1.5">Gallery Images</p>
+                    <div className="grid grid-cols-3 gap-3">
+                      <ImageUploadBox
+                        label="Main"
+                        value={form.contentImageUrl ?? ""}
+                        onChange={(url) => setForm((f) => ({ ...f, contentImageUrl: url }))}
+                      />
+                      <ImageUploadBox
+                        label="Second"
+                        value={form.contentImage2Url ?? ""}
+                        onChange={(url) => setForm((f) => ({ ...f, contentImage2Url: url }))}
+                      />
+                      <ImageUploadBox
+                        label="Third"
+                        value={form.contentImage3Url ?? ""}
+                        onChange={(url) => setForm((f) => ({ ...f, contentImage3Url: url }))}
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 mt-3">
+                      <input
+                        value={form.contentImage2Title ?? ""}
+                        onChange={(e) => setForm((f) => ({ ...f, contentImage2Title: e.target.value }))}
+                        placeholder="Second image caption"
+                        className={inputCls}
+                      />
+                      <input
+                        value={form.contentImage2Location ?? ""}
+                        onChange={(e) => setForm((f) => ({ ...f, contentImage2Location: e.target.value }))}
+                        placeholder="Second image client / location"
+                        className={inputCls}
+                      />
+                      <input
+                        value={form.contentImage3Title ?? ""}
+                        onChange={(e) => setForm((f) => ({ ...f, contentImage3Title: e.target.value }))}
+                        placeholder="Third image caption"
+                        className={inputCls}
+                      />
+                      <input
+                        value={form.contentImage3Location ?? ""}
+                        onChange={(e) => setForm((f) => ({ ...f, contentImage3Location: e.target.value }))}
+                        placeholder="Third image client / location"
+                        className={inputCls}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

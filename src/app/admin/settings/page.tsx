@@ -43,7 +43,17 @@ export default function SettingsPage() {
     setLoading(false);
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    fetch("/api/admin/settings")
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then((data) => {
+        const merged = { ...DEFAULTS, ...data };
+        setForm(merged);
+        setSavedForm(merged);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];

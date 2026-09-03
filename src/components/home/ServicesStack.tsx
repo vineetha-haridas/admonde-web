@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowRight, Building2, Hammer, Wrench, Layers } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { getServiceIcon } from "@/lib/serviceIcons";
 
 export type ServiceItem = {
   title: string; desc: string; slug: string; tags: string;
@@ -11,27 +12,20 @@ const THEME = {
   dark:  { bg: "#0D0D0D", textPrimary: "#F5F3EF", textMuted: "#555555", lineColor: "#2A2A2A" },
 };
 
-const DEFAULT_ICON = Layers;
-const ICON_MAP: Record<string, React.ElementType> = {
-  "interior-fitout": Building2,
-  "carpentry-fabrication": Hammer,
-  "mep-works": Wrench,
-};
-
 const STATIC_SERVICES: ServiceItem[] = [
   {
     title: "Interior\nFit-Out", desc: "Complete interior contracting from concept to handover — retail stores, offices, showrooms, and commercial spaces built to specification.",
-    slug: "interior-fitout", tags: "Retail,Office,Hospitality,Showroom", theme: "light",
+    slug: "interior-fitout", tags: "Retail | Office | Hospitality | Showroom", theme: "light",
     imageUrl: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1400&q=85", sortOrder: 0,
   },
   {
     title: "Carpentry &\nFabrication", desc: "Custom joinery, bespoke furniture, metal works, and structural fabrication crafted to precision for every project.",
-    slug: "carpentry-fabrication", tags: "Joinery,Metal Works,Shopfittings,Millwork", theme: "dark",
+    slug: "carpentry-fabrication", tags: "Joinery | Metal Works | Shopfittings | Millwork", theme: "dark",
     imageUrl: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1400&q=85", sortOrder: 1,
   },
   {
     title: "MEP\nContracting", desc: "Full mechanical, electrical, and plumbing works for fit-out and construction projects across the GCC.",
-    slug: "mep-works", tags: "Electrical,Plumbing,HVAC,Fire Safety", theme: "light",
+    slug: "mep-works", tags: "Electrical | Plumbing | HVAC | Fire Safety", theme: "light",
     imageUrl: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1400&q=85", sortOrder: 2,
   },
 ];
@@ -45,8 +39,8 @@ export function ServicesStack({ services }: { services?: ServiceItem[] }) {
         <div className="relative" style={{ height: `${items.length * 100}vh` }}>
           {items.map((s, i) => {
             const th = THEME[s.theme as keyof typeof THEME] ?? THEME.light;
-            const Icon = ICON_MAP[s.slug] ?? DEFAULT_ICON;
-            const tags = s.tags.split(",").map((t) => t.trim()).filter(Boolean);
+            const Icon = getServiceIcon(s.slug);
+            const tags = s.tags.split("|").map((t) => t.trim()).filter(Boolean);
             const num = String(i + 1).padStart(2, "0");
             const titleLines = s.title.split("\n");
 

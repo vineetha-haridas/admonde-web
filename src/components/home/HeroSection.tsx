@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
@@ -87,12 +88,19 @@ export function HeroSection({ imageUrl, label, headline, subtext }: HeroProps) {
             transition={{ duration: 1.2, delay: 0.15, ease: EASE }}
             className="h-52 sm:h-80 lg:h-full p-4 sm:p-6"
           >
-            <div className="w-full h-full overflow-hidden rounded-2xl">
-              <img
-                src={imageUrl}
-                alt="Admonde Creative Studio"
-                className="w-full h-full object-cover"
-              />
+            <div className="relative w-full h-full overflow-hidden rounded-2xl">
+              {imageUrl ? (
+                <Image
+                  src={imageUrl}
+                  alt="Admonde Creative Studio"
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                />
+              ) : (
+                <div className="w-full h-full bg-[#E8E4DC] animate-pulse" />
+              )}
             </div>
           </motion.div>
 

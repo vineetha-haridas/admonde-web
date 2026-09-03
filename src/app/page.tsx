@@ -10,6 +10,7 @@ import {
   Award,
   Users,
   PhoneCall,
+  ImageIcon,
 } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { getSiteSettings } from "@/lib/settings";
@@ -69,25 +70,6 @@ const staticClients = [
   { name: "AutoZone",    logoUrl: "https://logo.clearbit.com/autozone.com" },
 ];
 
-const staticPortfolio = [
-  {
-    title: "Fleet Wrap Campaign",
-    image: "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=600&q=85",
-  },
-  {
-    title: "Office Fit-Out",
-    image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=600&q=85",
-  },
-  {
-    title: "Retail Signage",
-    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=85",
-  },
-  {
-    title: "Exhibition Booth",
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=85",
-  },
-];
-
 export default async function HomePage() {
   let dbProjects: { title: string; imageUrl: string | null }[] = [];
   let dbClients: { name: string; logoUrl: string }[] = [];
@@ -95,7 +77,7 @@ export default async function HomePage() {
   const [settings] = await Promise.all([getSiteSettings()]);
   try {
     [dbProjects, dbClients, dbServices] = await Promise.all([
-      prisma.portfolioProject.findMany({ orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }], take: 4 }),
+      prisma.portfolioProject.findMany({ where: { featured: true }, orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }], take: 4 }),
       prisma.client.findMany({ where: { active: true }, orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }] }),
       prisma.service.findMany({ where: { active: true }, orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }] }),
     ]);
@@ -103,10 +85,7 @@ export default async function HomePage() {
     // DB unreachable — fall back to static data
   }
 
-  const portfolio =
-    dbProjects.length > 0
-      ? dbProjects.map((p) => ({ title: p.title, image: p.imageUrl ?? "" }))
-      : staticPortfolio;
+  const portfolio = dbProjects.map((p) => ({ title: p.title, image: p.imageUrl ?? "" }));
 
   const clients = dbClients;
 
@@ -235,30 +214,48 @@ export default async function HomePage() {
           </FadeUp>
 
           <div className="grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
-            {portfolio.slice(0, 4).map((item, i) => (
-              <FadeUp key={item.title + i} delay={i * 0.07}>
-                <Link href="/portfolio" className="group block">
-                  <div
-                    className="overflow-hidden rounded-2xl bg-[#E8E4DC] mb-3"
-                    style={{ aspectRatio: "4/3" }}
-                  >
-                    {item.image && (
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                      />
-                    )}
-                  </div>
-                  <div className="flex items-center justify-between px-1">
-                    <span className="font-heading font-medium text-[#111111] text-[13px] sm:text-[14px]">
-                      {item.title}
-                    </span>
-                    <ArrowRight className="w-3.5 h-3.5 text-[#CCCCCC] group-hover:text-[#111111] group-hover:translate-x-1 transition-all duration-300" />
-                  </div>
-                </Link>
-              </FadeUp>
-            ))}
+            {portfolio.length > 0
+              ? portfolio.slice(0, 4).map((item, i) => (
+                  <FadeUp key={item.title + i} delay={i * 0.07}>
+                    <Link href="/portfolio" className="group block">
+                      <div
+                        className="overflow-hidden rounded-2xl bg-[#E8E4DC] mb-3"
+                        style={{ aspectRatio: "4/3" }}
+                      >
+                        {item.image && (
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                          />
+                        )}
+                      </div>
+                      <div className="flex items-center justify-between px-1">
+                        <span className="font-heading font-medium text-[#111111] text-[13px] sm:text-[14px]">
+                          {item.title}
+                        </span>
+                        <ArrowRight className="w-3.5 h-3.5 text-[#CCCCCC] group-hover:text-[#111111] group-hover:translate-x-1 transition-all duration-300" />
+                      </div>
+                    </Link>
+                  </FadeUp>
+                ))
+              : Array.from({ length: 4 }).map((_, i) => (
+                  <FadeUp key={`empty-${i}`} delay={i * 0.07}>
+                    <div className="block">
+                      <div
+                        className="flex items-center justify-center overflow-hidden rounded-2xl bg-[#F4F2EE] border border-dashed border-[#D8D5CE] mb-3"
+                        style={{ aspectRatio: "4/3" }}
+                      >
+                        <ImageIcon className="w-6 h-6 text-[#D8D5CE]" />
+                      </div>
+                      <div className="flex items-center justify-between px-1">
+                        <span className="font-heading font-medium text-[#CCCCCC] text-[13px] sm:text-[14px]">
+                          Coming Soon
+                        </span>
+                      </div>
+                    </div>
+                  </FadeUp>
+                ))}
           </div>
 
           <Link
