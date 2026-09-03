@@ -68,19 +68,25 @@ export function ServicesStack({ services }: { services?: ServiceItem[] }) {
                   </div>
 
                   {/* Main content */}
-                  <div className="relative z-10 flex-1 flex flex-col justify-center" style={{ paddingBlock: "clamp(0.75rem, 4dvh, 2rem)" }}>
-                    <div className="flex items-center gap-4" style={{ marginBottom: "clamp(1rem, 4dvh, 2rem)" }}>
-                      <div className="w-10 h-10 flex items-center justify-center rounded-lg shrink-0" style={{ border: "1px solid rgba(114,176,67,0.4)" }}>
-                        <Icon className="w-4.5 h-4.5" style={{ color: "#72b043" }} strokeWidth={1.5} />
+                  <div className="relative z-10 flex-1 flex flex-col justify-center min-h-0" style={{ paddingBlock: "clamp(0.5rem, 3dvh, 1.5rem)" }}>
+                    <div className="flex items-center gap-4 shrink-0" style={{ marginBottom: "clamp(0.5rem, 3dvh, 1.5rem)" }}>
+                      <div className="w-9 h-9 flex items-center justify-center rounded-lg shrink-0" style={{ border: "1px solid rgba(114,176,67,0.4)" }}>
+                        <Icon className="w-4 h-4" style={{ color: "#72b043" }} strokeWidth={1.5} />
                       </div>
                     </div>
                     <h2
-                      className="font-display font-bold leading-[0.94]"
-                      style={{ fontSize: "clamp(2rem, min(5.5vw, 9dvh), 6rem)", color: th.textPrimary, marginBottom: "clamp(1rem, 4dvh, 2rem)" }}
+                      className="font-display font-bold leading-[0.94] shrink-0"
+                      style={{ fontSize: "clamp(1.75rem, min(5vw, 7dvh), 5.5rem)", color: th.textPrimary, marginBottom: "clamp(0.5rem, 3dvh, 1.5rem)" }}
                     >
                       {titleLines.map((line, j) => <span key={j} className="block">{line}</span>)}
                     </h2>
-                    <p className="text-[13px] sm:text-[14px] leading-[1.7]" style={{ color: th.textMuted, maxWidth: "44ch", marginBottom: "clamp(1.25rem, 5dvh, 2.5rem)" }}>
+                    <p
+                      className="text-[13px] sm:text-[14px] leading-[1.6] shrink-0 overflow-hidden"
+                      style={{
+                        color: th.textMuted, maxWidth: "44ch", marginBottom: "clamp(0.75rem, 3dvh, 1.5rem)",
+                        display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical",
+                      }}
+                    >
                       {s.desc}
                     </p>
                     <Link href={`/services/${s.slug}`} className="group inline-flex items-center gap-4 w-fit shrink-0">
@@ -90,10 +96,16 @@ export function ServicesStack({ services }: { services?: ServiceItem[] }) {
                     </Link>
                   </div>
 
-                  {/* Tags */}
-                  <div className="relative z-10 flex items-center gap-2 flex-wrap shrink-0">
+                  {/* Tags — single line; fades out instead of hard-clipping if the list is longer than the row */}
+                  <div
+                    className="relative z-10 flex items-center gap-2 flex-nowrap shrink-0 overflow-hidden whitespace-nowrap"
+                    style={{
+                      maskImage: "linear-gradient(to right, black 85%, transparent 100%)",
+                      WebkitMaskImage: "linear-gradient(to right, black 85%, transparent 100%)",
+                    }}
+                  >
                     {tags.map((tag, j) => (
-                      <span key={tag}>
+                      <span key={tag} className="shrink-0">
                         <span className="text-[10px] tracking-[0.2em] uppercase font-medium" style={{ color: th.textMuted }}>{tag}</span>
                         {j < tags.length - 1 && <span className="mx-2 opacity-30" style={{ color: th.textMuted }}>·</span>}
                       </span>
