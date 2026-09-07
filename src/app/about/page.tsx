@@ -65,7 +65,7 @@ const milestones = [
 ];
 
 const stats: { Icon: LucideIcon; value: string; label: string }[] = [
-  { Icon: Award, value: "28+", label: "Years of Excellence" },
+  { Icon: Award, value: "30+", label: "Years of Excellence" },
   { Icon: Users, value: "500+", label: "Projects Completed" },
   { Icon: Zap, value: "200+", label: "Happy Clients" },
 ];

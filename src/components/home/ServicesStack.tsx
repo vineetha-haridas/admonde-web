@@ -1,10 +1,14 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { getServiceIcon } from "@/lib/serviceIcons";
+import { ServiceImageCarousel } from "@/components/home/ServiceImageCarousel";
 
 export type ServiceItem = {
   title: string; desc: string; slug: string; tags: string;
   theme: string; imageUrl: string | null; sortOrder: number;
+  contentImageUrl?: string | null;
+  contentImage2Url?: string | null;
+  contentImage3Url?: string | null;
 };
 
 const THEME = {
@@ -43,6 +47,10 @@ export function ServicesStack({ services }: { services?: ServiceItem[] }) {
             const tags = s.tags.split("|").map((t) => t.trim()).filter(Boolean);
             const num = String(i + 1).padStart(2, "0");
             const titleLines = s.title.split("\n");
+            const flatTitle = s.title.replace(/\n/g, " ");
+            const images = Array.from(
+              new Set([s.imageUrl, s.contentImageUrl, s.contentImage2Url, s.contentImage3Url].filter((u): u is string => Boolean(u)))
+            );
 
             return (
               // Sticky "slot" — exactly 100dvh, unstyled, drives the scroll-jack timing.
@@ -56,12 +64,21 @@ export function ServicesStack({ services }: { services?: ServiceItem[] }) {
               >
                 <div
                   data-card
-                  className="w-full flex overflow-hidden rounded-3xl"
+                  className="w-full flex flex-col lg:flex-row overflow-hidden rounded-3xl"
                   style={{ backgroundColor: th.bg, height: "calc(100dvh - 6dvh)" }}
                 >
+                  {/* MOBILE IMAGE BAND — the split desktop layout hides the image below `lg`;
+                      this keeps the service visible on phones too, cycling the same images. */}
+                  <div
+                    className="lg:hidden shrink-0 relative overflow-hidden"
+                    style={{ height: "clamp(6rem, 20dvh, 9rem)" }}
+                  >
+                    <ServiceImageCarousel images={images} alt={flatTitle} className="w-full h-full" bgColor={th.lineColor} />
+                  </div>
+
                   {/* LEFT PANEL */}
                   <div
-                    className="w-full lg:w-[52%] h-full min-h-0 flex flex-col justify-between overflow-y-auto px-8 sm:px-14 lg:px-20 xl:px-28 2xl:px-36 relative"
+                    className="w-full lg:w-[52%] flex-1 min-h-0 lg:h-full flex flex-col justify-between overflow-y-auto px-8 sm:px-14 lg:px-20 xl:px-28 2xl:px-36 relative"
                     style={{ paddingTop: "6.5rem", paddingBottom: "clamp(1.25rem, 4dvh, 2.5rem)" }}
                   >
                     {/* Top bar */}
@@ -121,14 +138,9 @@ export function ServicesStack({ services }: { services?: ServiceItem[] }) {
                     </div>
                   </div>
 
-                  {/* RIGHT PANEL: Image */}
+                  {/* RIGHT PANEL: Image (desktop only) */}
                   <div className="hidden lg:block flex-1 h-full relative overflow-hidden">
-                    {s.imageUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={s.imageUrl} alt={s.title} className="w-full h-full object-cover scale-[1.03] transition-transform duration-700" loading={i === 0 ? "eager" : "lazy"} />
-                    ) : (
-                      <div className="w-full h-full" style={{ background: th.lineColor }} />
-                    )}
+                    <ServiceImageCarousel images={images} alt={flatTitle} className="w-full h-full" bgColor={th.lineColor} />
                     <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-black/5" />
                     <div className="absolute bottom-8 right-8 font-display font-bold leading-none select-none pointer-events-none text-white" style={{ fontSize: "clamp(3rem, min(10vw, 16dvh), 8rem)", opacity: 0.08 }}>
                       {num}

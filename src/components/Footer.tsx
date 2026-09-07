@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { PHONE_NUMBER, PHONE_HREF, EMAIL, EMAIL_HREF, ADDRESS_LINE1, ADDRESS_CITY, ADDRESS_COUNTRY } from "@/lib/contact";
+import { PHONE_NUMBER, PHONE_HREF, EMAIL, EMAIL_HREF, LOCATIONS } from "@/lib/contact";
 
 const footerServices = [
   { label: "Interior Fit-Out", href: "/services/interior-fitout" },
@@ -120,9 +120,12 @@ export default function Footer() {
             <div className="flex flex-col gap-2.5">
               <a href={PHONE_HREF} className="text-[12px] text-[#888888] hover:text-[#111111] transition-colors duration-200">{PHONE_NUMBER}</a>
               <a href={EMAIL_HREF} className="text-[12px] text-[#888888] hover:text-[#111111] transition-colors duration-200">{EMAIL}</a>
-              <p className="text-[12px] text-[#888888] leading-relaxed">
-                {ADDRESS_LINE1}<br />{ADDRESS_CITY}, {ADDRESS_COUNTRY}
-              </p>
+              {LOCATIONS.map((loc) => (
+                <p key={loc.city} className="text-[12px] text-[#888888] leading-relaxed">
+                  <span className="text-[#AAAAAA]">{loc.city}: </span>
+                  {loc.line1}<br />{loc.city}, {loc.country}
+                </p>
+              ))}
             </div>
           </div>
 

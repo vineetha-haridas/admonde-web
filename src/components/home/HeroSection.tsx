@@ -88,13 +88,13 @@ export function HeroSection({ imageUrl, label, headline, subtext }: HeroProps) {
             transition={{ duration: 1.2, delay: 0.15, ease: EASE }}
             className="h-52 sm:h-80 lg:h-full p-4 sm:p-6"
           >
-            <div className="relative w-full h-full overflow-hidden rounded-2xl">
+            <div className="relative w-full h-full overflow-hidden rounded-2xl bg-[#E8E4DC]">
               {imageUrl ? (
                 <Image
                   src={imageUrl}
                   alt="Admonde Creative Studio"
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   priority
                   sizes="(max-width: 1024px) 100vw, 45vw"
                 />

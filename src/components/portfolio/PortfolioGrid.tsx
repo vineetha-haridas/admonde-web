@@ -59,7 +59,7 @@ export function PortfolioGrid({
                   <img
                     src={project.imageUrl}
                     alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                    className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-[1.03]"
                   />
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-[#CCCCCC]">

@@ -146,7 +146,7 @@ export default async function ServiceDetailPage({
                     <img
                       src={contentImages[0].url!}
                       alt={flatten(service.title)}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                   </div>
                   {contentImages.length > 1 && (

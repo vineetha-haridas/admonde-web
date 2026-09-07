@@ -77,7 +77,7 @@ export default async function ServicesPage() {
                             <img
                               src={s.imageUrl}
                               alt={flatten(s.title)}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                              className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-[1.03]"
                             />
                           )}
                         </div>

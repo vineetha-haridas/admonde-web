@@ -5,8 +5,9 @@ import {
   ArrowRight, MapPin, Phone, Mail, Clock,
   Upload, CheckCircle2, Check, Loader2,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { PHONE_NUMBER, PHONE_HREF, EMAIL, EMAIL_HREF, ADDRESS_LINE1, ADDRESS_LINE2, ADDRESS_CITY, ADDRESS_COUNTRY, WHATSAPP_HREF, BUSINESS_HOURS } from "@/lib/contact";
+import { PHONE_NUMBER, PHONE_HREF, EMAIL, EMAIL_HREF, LOCATIONS, WHATSAPP_HREF, BUSINESS_HOURS } from "@/lib/contact";
 
 const services = [
   "Events & Exhibitions",
@@ -20,12 +21,12 @@ const services = [
 
 const budgetRanges = ["< SAR 5K", "SAR 5K–20K", "SAR 20K–50K", "SAR 50K+"];
 
-const contactInfo = [
-  {
+const contactInfo: { Icon: LucideIcon; title: string; lines: string[]; href?: string }[] = [
+  ...LOCATIONS.map((loc) => ({
     Icon: MapPin,
-    title: "Our Office",
-    lines: [ADDRESS_LINE1, ADDRESS_LINE2, ADDRESS_CITY, ADDRESS_COUNTRY],
-  },
+    title: `${loc.city} Office`,
+    lines: [loc.line1, loc.line2, loc.city, loc.country],
+  })),
   {
     Icon: Phone,
     title: "Phone",
@@ -344,19 +345,26 @@ export default function ContactPage() {
         </div>
       </section>
 
-       {/* ── Map ── */}
+       {/* ── Maps ── */}
       <section className="px-3 sm:px-5 lg:px-8 2xl:px-10 3xl:px-14 py-3">
-        <div className="max-w-7xl mx-auto bg-[#f0ede6] rounded-3xl overflow-hidden h-[340px] 2xl:h-[420px] 3xl:h-[500px]">
-          <iframe
-            src="https://maps.google.com/maps?q=Riyadh,Saudi+Arabia&z=13&output=embed"
-            width="100%"
-            height="100%"
-            style={{ border: 0, filter: "grayscale(1) contrast(0.9) opacity(0.85)" }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Admonde Location"
-          />
+        <div className="max-w-7xl mx-auto grid sm:grid-cols-2 gap-4">
+          {LOCATIONS.map((loc) => (
+            <div key={loc.city} className="relative bg-[#f0ede6] rounded-3xl overflow-hidden h-[280px] 2xl:h-[340px]">
+              <iframe
+                src={`https://maps.google.com/maps?q=${loc.mapQuery}&z=13&output=embed`}
+                width="100%"
+                height="100%"
+                style={{ border: 0, filter: "grayscale(1) contrast(0.9) opacity(0.85)" }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title={`Admonde ${loc.city} Office`}
+              />
+              <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-xl pointer-events-none">
+                <p className="text-[11px] font-semibold tracking-[0.1em] uppercase text-[#111111]">{loc.city} Office</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </div>
