@@ -6,7 +6,7 @@ import { PHONE_NUMBER, PHONE_HREF, EMAIL, EMAIL_HREF, LOCATIONS } from "@/lib/co
 const footerServices = [
   { label: "Interior Fit-Out", href: "/services/interior-fitout" },
   { label: "Carpentry & Fabrication", href: "/services/carpentry-fabrication" },
-  { label: "MEP Works", href: "/services/mep-works" },
+  { label: "Fleet Branding", href: "/services/fleet" },
   { label: "Print & Production", href: "/services/printing-branding" },
   { label: "Events & Exhibitions", href: "/services/exhibition-booths" },
 ];
@@ -33,7 +33,7 @@ export default function Footer() {
               <Image src="/Admonde Black.png" alt="Admonde" width={180} height={40} className="h-7 w-auto object-contain" />
             </Link>
             <p className="text-[#AAAAAA] text-[12px] leading-relaxed mb-6 max-w-[220px]">
-              Carpentry, fit-out, MEP contracting, and print production across the GCC since 1996.
+              Carpentry, fit-out, fleet branding, and print production across the GCC since 1996.
             </p>
             <div className="flex items-center gap-3">
               <a

@@ -18,7 +18,7 @@ const EMPTY: FormData = {
   featured: false, sortOrder: 0,
 };
 
-const CATEGORIES = ["Interior Fit-Out", "Carpentry & Fabrication", "MEP Works", "Print & Branding", "Exhibition & Events", "Fleet & Uniform", "Other"];
+const CATEGORIES = ["Interior Fit-Out", "Carpentry & Fabrication", "Print & Branding", "Exhibition & Events", "Fleet Branding", "Other"];
 
 export default function PortfolioPage() {
   const [projects, setProjects] = useState<Project[]>([]);

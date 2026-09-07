@@ -149,8 +149,8 @@ export default async function HomePage() {
                   Crafted to Last.
                 </h2>
                 <p className="text-[#555555] text-[14px] leading-relaxed mb-8 max-w-[420px] 2xl:max-w-[520px]">
-                  From precision carpentry and complete interior fit-out to MEP
-                  contracting and offset printing — Admonde delivers end-to-end
+                  From precision carpentry and complete interior fit-out to fleet
+                  branding and offset printing — Admonde delivers end-to-end
                   contracting and production solutions across the GCC since 1996.
                 </p>
                 <Link

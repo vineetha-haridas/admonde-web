@@ -41,7 +41,7 @@ const staticProjects: PortfolioItem[] = [
   {
     id: -5,
     title: "Corporate Fleet Wrap",
-    category: "Fleet & Uniform",
+    category: "Fleet Branding",
     imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=80",
     location: "National Fleet, Saudi Arabia",
     year: "2023",

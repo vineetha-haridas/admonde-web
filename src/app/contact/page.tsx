@@ -14,8 +14,7 @@ const services = [
   "Store & Office Branding",
   "Print & Production",
   "POP / POS Displays",
-  "Fleet & Uniform Branding",
-  "HSE & Safety Branding",
+  "Fleet Branding",
   "Other",
 ];
 

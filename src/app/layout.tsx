@@ -19,11 +19,11 @@ export const metadata: Metadata = {
     template: "%s | ad.monde",
   },
   description:
-    "Admonde delivers carpentry & fabrication, interior fit-out, MEP contracting, and print production across the GCC since 1996.",
+    "Admonde delivers carpentry & fabrication, interior fit-out, fleet branding, and print production across the GCC since 1996.",
   keywords: [
     "interior fit-out",
     "carpentry fabrication",
-    "MEP contracting",
+    "fleet branding",
     "print production",
     "exhibition booths",
     "fit-out contractor",
@@ -32,9 +32,9 @@ export const metadata: Metadata = {
     "GCC",
   ],
   openGraph: {
-    title: "Admonde – Carpentry, Fit-Out, MEP & Print",
+    title: "Admonde – Carpentry, Fit-Out & Print",
     description:
-      "Carpentry & fabrication, interior fit-out, MEP contracting, and precision printing for leading enterprises across the GCC since 1996.",
+      "Carpentry & fabrication, interior fit-out, fleet branding, and precision printing for leading enterprises across the GCC since 1996.",
     type: "website",
     locale: "en_AE",
   },

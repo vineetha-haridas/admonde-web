@@ -19,7 +19,7 @@ const EMPTY: FormData = {
 };
 
 const JOB_TYPES = ["Full-time", "Part-time", "Contract", "Internship", "Freelance"];
-const DEPARTMENTS = ["Design & Creative", "Carpentry & Fabrication", "Interior Fit-Out", "MEP & Engineering", "Print Production", "Project Management", "Sales & Business Development", "Operations", "Administration", "Other"];
+const DEPARTMENTS = ["Design & Creative", "Carpentry & Fabrication", "Interior Fit-Out", "Fleet Branding", "Print Production", "Project Management", "Sales & Business Development", "Operations", "Administration", "Other"];
 
 export default function JobsPage() {
   const [jobs, setJobs] = useState<Job[]>([]);

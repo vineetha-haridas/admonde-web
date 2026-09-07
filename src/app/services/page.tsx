@@ -10,7 +10,7 @@ import { getServiceIcon } from "@/lib/serviceIcons";
 export const metadata: Metadata = {
   title: "Services | Admonde",
   description:
-    "Carpentry & fabrication, interior fit-out, MEP contracting, printing, events, and HSE branding — complete project solutions by Admonde.",
+    "Carpentry & fabrication, interior fit-out, printing, events, and fleet branding — complete project solutions by Admonde.",
 };
 
 function flatten(text: string) {
@@ -47,7 +47,7 @@ export default async function ServicesPage() {
             Our Services
           </h1>
           <p className="text-[#666666] text-[14px] leading-relaxed max-w-lg">
-            From carpentry and fit-out contracting to MEP works, precision printing,
+            From carpentry and fit-out contracting to precision printing
             and brand activation — all delivered by one dedicated team.
           </p>
         </div>

@@ -7,7 +7,7 @@ import { FadeUp } from "@/components/home/FadeUp";
 export const metadata: Metadata = {
   title: "About Us | ad.monde",
   description:
-    "Admonde — specialists in carpentry, interior fit-out, MEP contracting, and print production across the GCC since 1996. Formerly Al-Qadi Advertising.",
+    "Admonde — specialists in carpentry, interior fit-out, fleet branding, and print production across the GCC since 1996. Formerly Al-Qadi Advertising.",
 };
 
 const values: { Icon: LucideIcon; title: string; desc: string }[] = [
@@ -91,8 +91,8 @@ export default function AboutPage() {
             Advertising.
           </h1>
           <p className="text-[#666666] text-[14px] leading-relaxed max-w-lg">
-            Admonde — specialists in carpentry, interior fit-out, MEP contracting,
-            and print production. Two and a half decades of building excellence across
+            Admonde — specialists in carpentry, interior fit-out, fleet branding,
+            and print production. Three decades of building excellence across
             the GCC since 1996.
           </p>
         </div>
@@ -130,8 +130,8 @@ export default function AboutPage() {
                 <p className="text-[#555555] text-[14px] leading-relaxed mb-4">
                   Formerly known as Al-Qadi Advertising, Admonde has grown into one of
                   the GCC&apos;s most trusted contracting and production companies since
-                  1996. We specialise in interior fit-out, carpentry and fabrication, MEP
-                  contracting, and commercial printing — serving clients from global
+                  1996. We specialise in interior fit-out, carpentry and fabrication, fleet
+                  branding, and commercial printing — serving clients from global
                   corporations and government entities to retail brands.
                 </p>
                 <p className="text-[#777777] text-[13px] leading-relaxed mb-8">
@@ -220,7 +220,7 @@ export default function AboutPage() {
                 We are a full-service contracting and production company — your partners
                 from first concept through final handover. Our commitment extends to
                 building lasting relationships based on trust, reliability, and mutual
-                growth, delivering fit-out, fabrication, MEP, and print solutions that
+                growth, delivering fit-out, fabrication, fleet branding, and print solutions that
                 exceed expectations.
               </p>
             </div>

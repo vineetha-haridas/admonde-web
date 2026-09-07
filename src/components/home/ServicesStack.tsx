@@ -28,9 +28,9 @@ const STATIC_SERVICES: ServiceItem[] = [
     imageUrl: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1400&q=85", sortOrder: 1,
   },
   {
-    title: "MEP\nContracting", desc: "Full mechanical, electrical, and plumbing works for fit-out and construction projects across the GCC.",
-    slug: "mep-works", tags: "Electrical | Plumbing | HVAC | Fire Safety", theme: "light",
-    imageUrl: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1400&q=85", sortOrder: 2,
+    title: "Fleet\nBranding", desc: "Van, truck, and bus branding with precision vehicle wraps that turn your fleet into a moving billboard.",
+    slug: "fleet", tags: "Van Branding | Truck Branding | Bus Branding | Vehicle Wraps", theme: "light",
+    imageUrl: "https://images.unsplash.com/photo-1416339684178-3a239570f315?w=1400&q=85", sortOrder: 2,
   },
 ];
 

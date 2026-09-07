@@ -15,7 +15,7 @@ const DEFAULTS: Settings = {
   hero_image_url: "",
   hero_label: "Advertising & Printing Solutions",
   hero_headline: "We Build Brands\nThat People\nRemember.",
-  hero_subtext: "Custom carpentry, complete fit-out, MEP contracting, and precision printing — built to specification, delivered on time.",
+  hero_subtext: "Custom carpentry, complete fit-out, fleet branding, and precision printing — built to specification, delivered on time.",
 };
 
 const inputCls = "w-full bg-[#F7F5F2] border border-[#E0DDD8] text-[#111111] placeholder:text-[#CCCCCC] px-3 py-2.5 text-sm rounded-lg focus:outline-none focus:border-[#999999] transition-colors";
