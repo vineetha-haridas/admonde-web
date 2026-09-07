@@ -30,17 +30,32 @@ export function ServiceImageCarousel({
   }
 
   return (
-    <div className={className} style={{ background: bgColor, position: "relative" }}>
+    <div className={className} style={{ background: bgColor, position: "relative", overflow: "hidden" }}>
       {images.map((url, i) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <div
           key={url + i}
-          src={url}
-          alt={alt}
-          loading={i === 0 ? "eager" : "lazy"}
-          className="absolute inset-0 w-full h-full object-contain transition-opacity duration-1000"
+          className="absolute inset-0 transition-opacity duration-1000"
           style={{ opacity: i === index ? 1 : 0 }}
-        />
+        >
+          {/* Blurred, filled backdrop — never leaves dead space, but the real
+              photo (below) is always shown in full, uncropped. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={url}
+            alt=""
+            aria-hidden
+            loading={i === 0 ? "eager" : "lazy"}
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ filter: "blur(40px) brightness(0.55)", transform: "scale(1.15)" }}
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={url}
+            alt={alt}
+            loading={i === 0 ? "eager" : "lazy"}
+            className="absolute inset-0 w-full h-full object-contain"
+          />
+        </div>
       ))}
     </div>
   );
