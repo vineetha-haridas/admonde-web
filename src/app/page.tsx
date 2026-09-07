@@ -101,12 +101,12 @@ export default async function HomePage() {
 
       {/* ── 2. PREFERRED BY LEADING BRANDS ── */}
       <section className="px-4 sm:px-6 lg:px-8 2xl:px-10 3xl:px-14 py-3">
-        <div className="max-w-7xl mx-auto bg-[#f0ede6] rounded-2xl py-7 overflow-hidden">
+        <div className="max-w-7xl mx-auto bg-[#f0ede6] rounded-2xl py-9 overflow-hidden">
           <div className="flex items-center">
             <p className="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#AAAAAA] whitespace-nowrap px-8 sm:px-12 lg:px-16 shrink-0">
               PREFERRED BY LEADING BRANDS
             </p>
-            <div className="w-px h-9 bg-[#E0DDD8] shrink-0 mr-10 hidden sm:block" />
+            <div className="w-px h-12 bg-[#E0DDD8] shrink-0 mr-10 hidden sm:block" />
             <BrandMarquee clients={clients} />
           </div>
         </div>
