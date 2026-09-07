@@ -142,9 +142,6 @@ export function ServicesStack({ services }: { services?: ServiceItem[] }) {
                   <div className="hidden lg:block flex-1 h-full relative overflow-hidden">
                     <ServiceImageCarousel images={images} alt={flatTitle} className="w-full h-full" bgColor={th.lineColor} />
                     <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-black/5" />
-                    <div className="absolute bottom-8 right-8 font-display font-bold leading-none select-none pointer-events-none text-white" style={{ fontSize: "clamp(3rem, min(10vw, 16dvh), 8rem)", opacity: 0.08 }}>
-                      {num}
-                    </div>
                   </div>
                 </div>
               </div>
