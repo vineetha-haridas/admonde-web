@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { Upload, Loader2, X, Save, RefreshCw } from "lucide-react";
+import { Upload, Loader2, X, Save, RefreshCw, KeyRound } from "lucide-react";
 import { toast } from "sonner";
 
 type Settings = {
@@ -29,7 +29,44 @@ export default function SettingsPage() {
   const [uploadError, setUploadError] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [changingPassword, setChangingPassword] = useState(false);
+
   const isDirty = JSON.stringify(form) !== JSON.stringify(saved);
+
+  async function changePassword() {
+    if (newPassword !== confirmPassword) {
+      toast.error("New passwords don't match");
+      return;
+    }
+    if (newPassword.length < 8) {
+      toast.error("New password must be at least 8 characters");
+      return;
+    }
+    setChangingPassword(true);
+    try {
+      const res = await fetch("/api/admin/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error || "Failed to change password");
+      } else {
+        toast.success("Password changed");
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      }
+    } catch {
+      toast.error("Something went wrong");
+    } finally {
+      setChangingPassword(false);
+    }
+  }
 
   async function load() {
     setLoading(true);
@@ -213,6 +250,35 @@ export default function SettingsPage() {
                     placeholder="Brief description…"
                   />
                 </div>
+              </div>
+            </div>
+
+            {/* Security */}
+            <div className="bg-white border border-[#E8E4DC] rounded-2xl p-6">
+              <h2 className="text-[#111111] font-semibold text-sm mb-5 pb-4 border-b border-[#EEEBE6] flex items-center gap-2">
+                <KeyRound className="w-4 h-4 text-[#AAAAAA]" /> Change Password
+              </h2>
+              <div className="space-y-4 max-w-sm">
+                <div>
+                  <label className="block text-[#888888] text-[11px] uppercase tracking-widest mb-1.5">Current Password</label>
+                  <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} className={inputCls} autoComplete="current-password" />
+                </div>
+                <div>
+                  <label className="block text-[#888888] text-[11px] uppercase tracking-widest mb-1.5">New Password</label>
+                  <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className={inputCls} autoComplete="new-password" placeholder="At least 8 characters" />
+                </div>
+                <div>
+                  <label className="block text-[#888888] text-[11px] uppercase tracking-widest mb-1.5">Confirm New Password</label>
+                  <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className={inputCls} autoComplete="new-password" />
+                </div>
+                <button
+                  onClick={changePassword}
+                  disabled={changingPassword || !currentPassword || !newPassword || !confirmPassword}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#111111] hover:bg-[#72b043] text-white font-semibold text-sm transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-[#111111]"
+                >
+                  {changingPassword && <Loader2 className="w-4 h-4 animate-spin" />}
+                  Update Password
+                </button>
               </div>
             </div>
           </div>

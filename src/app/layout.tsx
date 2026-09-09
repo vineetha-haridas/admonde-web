@@ -14,6 +14,7 @@ const montserratHeading = Montserrat({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://admonde.com"),
   title: {
     default: "ad.monde – Beyond Advertising",
     template: "%s | ad.monde",
