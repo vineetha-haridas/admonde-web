@@ -14,6 +14,7 @@ import {
   Building2,
   Layers,
   Settings,
+  Send,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -25,6 +26,7 @@ const navItems = [
   { label: "Services", href: "/admin/services", icon: Layers },
   { label: "Clients", href: "/admin/clients", icon: Building2 },
   { label: "Jobs", href: "/admin/jobs", icon: Briefcase },
+  { label: "Newsletter", href: "/admin/newsletter", icon: Send },
   { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
 

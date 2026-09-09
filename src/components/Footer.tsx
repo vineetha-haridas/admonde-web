@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
 import { PHONE_NUMBER, PHONE_HREF, EMAIL, EMAIL_HREF, LOCATIONS } from "@/lib/contact";
+import { NewsletterForm } from "@/components/NewsletterForm";
 
 const footerServices = [
   { label: "Interior Fit-Out", href: "/services/interior-fitout" },
@@ -137,20 +137,7 @@ export default function Footer() {
             <p className="text-[12px] text-[#AAAAAA] leading-relaxed mb-4">
               Stay updated with our latest projects and offers.
             </p>
-            <div className="flex gap-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 min-w-0 bg-[#ECEAE5] text-[#111111] placeholder-[#BBBBBB] text-[12px] px-3.5 py-2.5 rounded-lg border border-[#E0DDD8] focus:outline-none focus:border-[#CCCCCC] transition-colors duration-200"
-              />
-              <button
-                type="button"
-                className="bg-[#72b043] text-white p-2.5 rounded-lg hover:bg-[#5a9035] transition-colors duration-200 shrink-0"
-                aria-label="Subscribe"
-              >
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
+            <NewsletterForm />
           </div>
         </div>
       </div>
