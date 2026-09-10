@@ -1,0 +1,43 @@
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: admonde-web
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - admonde
+
+  db:
+    image: postgres:17-alpine
+    container_name: admonde-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: admonde
+      POSTGRES_USER: admonde
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - admonde
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admonde -d admonde"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+
+networks:
+  admonde:

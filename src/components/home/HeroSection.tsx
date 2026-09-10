@@ -94,7 +94,7 @@ export function HeroSection({ imageUrl, label, headline, subtext }: HeroProps) {
                   src={imageUrl}
                   alt="Admonde Creative Studio"
                   fill
-                  className="object-contain"
+                  className="object-cover object-center"
                   priority
                   sizes="(max-width: 1024px) 100vw, 45vw"
                 />
