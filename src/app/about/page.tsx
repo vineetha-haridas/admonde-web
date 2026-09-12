@@ -28,33 +28,6 @@ const values: { Icon: LucideIcon; title: string; desc: string }[] = [
   },
 ];
 
-const team: { name: string; role: string; image: string; linkedin?: string }[] = [
-  {
-    name: "Abdullah Al-Qadi",
-    role: "Founder & CEO",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Khalid Al-Rashid",
-    role: "Head of Production",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Sara Mahmoud",
-    role: "Creative Director",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80",
-    linkedin: "https://linkedin.com",
-  },
-  {
-    name: "Omar Nasser",
-    role: "Client Relations Manager",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80",
-    linkedin: "https://linkedin.com",
-  },
-];
-
 const milestones = [
   { year: "1996", event: "Founded as Al-Qadi Advertising in the Kingdom of Saudi Arabia" },
   { year: "2000", event: "Expanded into large-scale events and exhibitions fabrication" },

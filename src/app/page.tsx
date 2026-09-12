@@ -54,22 +54,6 @@ const stats: { Icon: LucideIcon; value: string; label: string }[] = [
   { Icon: Zap, value: "200+", label: "Happy Clients" },
 ];
 
-
-const staticClients = [
-  { name: "LG",          logoUrl: "https://logo.clearbit.com/lg.com" },
-  { name: "Samsung",     logoUrl: "https://logo.clearbit.com/samsung.com" },
-  { name: "Bupa",        logoUrl: "https://logo.clearbit.com/bupa.com" },
-  { name: "TCL",         logoUrl: "https://logo.clearbit.com/tcl.com" },
-  { name: "Hisense",     logoUrl: "https://logo.clearbit.com/hisense.com" },
-  { name: "Nike",        logoUrl: "https://logo.clearbit.com/nike.com" },
-  { name: "Decathlon",   logoUrl: "https://logo.clearbit.com/decathlon.com" },
-  { name: "Pepsi",       logoUrl: "https://logo.clearbit.com/pepsi.com" },
-  { name: "Almarai",     logoUrl: "https://logo.clearbit.com/almarai.com" },
-  { name: "Centrepoint", logoUrl: "https://logo.clearbit.com/centrepointstores.com" },
-  { name: "Heineken",    logoUrl: "https://logo.clearbit.com/heineken.com" },
-  { name: "AutoZone",    logoUrl: "https://logo.clearbit.com/autozone.com" },
-];
-
 export default async function HomePage() {
   let dbProjects: { title: string; imageUrl: string | null }[] = [];
   let dbClients: { name: string; logoUrl: string }[] = [];

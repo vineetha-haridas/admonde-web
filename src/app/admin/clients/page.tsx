@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { Plus, Pencil, Trash2, RefreshCw, X, Upload, Loader2, ImageIcon, Globe } from "lucide-react";
+import { Plus, Pencil, Trash2, RefreshCw, X, Upload, Loader2, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 

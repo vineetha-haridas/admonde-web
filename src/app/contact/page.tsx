@@ -18,8 +18,6 @@ const services = [
   "Other",
 ];
 
-const budgetRanges = ["< SAR 5K", "SAR 5K–20K", "SAR 20K–50K", "SAR 50K+"];
-
 const contactInfo: { Icon: LucideIcon; title: string; lines: string[]; href?: string }[] = [
   ...LOCATIONS.map((loc) => ({
     Icon: MapPin,
@@ -53,7 +51,6 @@ export default function ContactPage() {
   const [loading, setLoading] = useState(false);
   const [fileName, setFileName] = useState("");
   const [selectedService, setSelectedService] = useState("");
-  const [selectedBudget, setSelectedBudget] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,7 +72,6 @@ export default function ContactPage() {
           email: fd.get("email"),
           phone: fd.get("phone"),
           service: selectedService || null,
-          budget: selectedBudget || null,
           message: fd.get("message"),
         }),
       });
@@ -188,7 +184,6 @@ export default function ContactPage() {
                       setSubmitted(false);
                       setFileName("");
                       setSelectedService("");
-                      setSelectedBudget("");
                     }}
                     className="mt-8 text-[11px] font-semibold tracking-[0.12em] uppercase text-[#888888] border border-[#E0DDD8] px-6 py-3 rounded-xl hover:text-[#111111] hover:border-[#999999] transition-colors duration-200"
                   >
@@ -224,11 +219,11 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  {/* Service & Budget */}
+                  {/* Service */}
                   <div className="bg-[#FAFAF8] rounded-2xl p-6 flex flex-col gap-5">
                     <p className="flex items-center gap-2 text-[10px] font-semibold tracking-[0.35em] uppercase text-[#AAAAAA]">
                       <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-[#72b043]" />
-                      Service &amp; Budget
+                      Project Scope
                     </p>
 
                     <div className="flex flex-col gap-2">
