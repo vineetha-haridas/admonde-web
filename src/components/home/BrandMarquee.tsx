@@ -39,7 +39,7 @@ function BrandLogo({ name, logoUrl }: BrandClient) {
 
 function MarqueeSkeleton() {
   return (
-    <div className="flex items-center gap-10 sm:gap-20 lg:gap-24 w-full sm:flex-1 min-w-0 overflow-hidden px-6 sm:px-2">
+    <div className="flex items-center gap-6 sm:gap-10 lg:gap-12 w-full sm:flex-1 min-w-0 overflow-hidden px-6 sm:px-2">
       {Array.from({ length: 6 }).map((_, i) => (
         <div
           key={i}
@@ -60,7 +60,7 @@ export function BrandMarquee({ clients }: { clients: BrandClient[] }) {
   // of silently clipping logos out of view.
   if (clients.length < 6) {
     return (
-      <div className="flex items-center gap-10 sm:gap-20 lg:gap-24 w-full sm:flex-1 min-w-0 overflow-x-auto px-6 sm:px-2">
+      <div className="flex items-center gap-6 sm:gap-10 lg:gap-12 w-full sm:flex-1 min-w-0 overflow-x-auto px-6 sm:px-2">
         {clients.map((b) => (
           <BrandLogo key={b.name} name={b.name} logoUrl={b.logoUrl} />
         ))}
@@ -75,7 +75,7 @@ export function BrandMarquee({ clients }: { clients: BrandClient[] }) {
     <div className="overflow-hidden w-full sm:flex-1 min-w-0">
       <div
         className="flex items-center animate-marquee"
-        style={{ animationDuration: `${Math.max(20, clients.length * 2.5)}s`, gap: "4rem" }}
+        style={{ animationDuration: `${Math.max(20, clients.length * 2.5)}s`, gap: "2rem" }}
       >
         {looped.map((b, i) => (
           <BrandLogo key={i} name={b.name} logoUrl={b.logoUrl} />
