@@ -48,22 +48,22 @@ const whyFeatures: { Icon: LucideIcon; title: string; desc: string }[] = [
   },
 ];
 
-const stats: { Icon: LucideIcon; value: string; label: string }[] = [
-  { Icon: Award, value: "30+", label: "Years of Excellence" },
-  { Icon: Users, value: "500+", label: "Projects Completed" },
-  { Icon: Zap, value: "200+", label: "Happy Clients" },
-];
+const FOUNDED_YEAR = 1996;
 
 export default async function HomePage() {
   let dbProjects: { title: string; imageUrl: string | null }[] = [];
   let dbClients: { name: string; logoUrl: string }[] = [];
   let dbServices: ServiceItem[] = [];
+  let portfolioCount = 500;
+  let clientCount = 200;
   const [settings] = await Promise.all([getSiteSettings()]);
   try {
-    [dbProjects, dbClients, dbServices] = await Promise.all([
+    [dbProjects, dbClients, dbServices, portfolioCount, clientCount] = await Promise.all([
       prisma.portfolioProject.findMany({ where: { featured: true }, orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }], take: 4 }),
       prisma.client.findMany({ where: { active: true }, orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }] }),
       prisma.service.findMany({ where: { active: true }, orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }] }),
+      prisma.portfolioProject.count(),
+      prisma.client.count({ where: { active: true } }),
     ]);
   } catch {
     // DB unreachable — fall back to static data
@@ -72,6 +72,12 @@ export default async function HomePage() {
   const portfolio = dbProjects.map((p) => ({ title: p.title, image: p.imageUrl ?? "" }));
 
   const clients = dbClients;
+
+  const stats: { Icon: LucideIcon; value: string; label: string }[] = [
+    { Icon: Award, value: `${new Date().getFullYear() - FOUNDED_YEAR}+`, label: "Years of Excellence" },
+    { Icon: Users, value: `${portfolioCount}+`, label: "Projects Completed" },
+    { Icon: Zap, value: `${clientCount}+`, label: "Happy Clients" },
+  ];
 
   return (
     <div className="bg-white">

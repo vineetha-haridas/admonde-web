@@ -3,6 +3,9 @@ import Link from "next/link";
 import { ArrowRight, Target, Eye, Heart, Award, Users, Zap } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { FadeUp } from "@/components/home/FadeUp";
+import { prisma } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "About Us | ad.monde",
@@ -37,13 +40,26 @@ const milestones = [
   { year: "2024", event: "500+ projects and 200+ clients served" },
 ];
 
-const stats: { Icon: LucideIcon; value: string; label: string }[] = [
-  { Icon: Award, value: "30+", label: "Years of Excellence" },
-  { Icon: Users, value: "500+", label: "Projects Completed" },
-  { Icon: Zap, value: "200+", label: "Happy Clients" },
-];
+const FOUNDED_YEAR = 1996;
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  let portfolioCount = 500;
+  let clientCount = 200;
+  try {
+    [portfolioCount, clientCount] = await Promise.all([
+      prisma.portfolioProject.count(),
+      prisma.client.count({ where: { active: true } }),
+    ]);
+  } catch {
+    // DB unreachable — fall back to the static marketing figures
+  }
+
+  const stats: { Icon: LucideIcon; value: string; label: string }[] = [
+    { Icon: Award, value: `${new Date().getFullYear() - FOUNDED_YEAR}+`, label: "Years of Excellence" },
+    { Icon: Users, value: `${portfolioCount}+`, label: "Projects Completed" },
+    { Icon: Zap, value: `${clientCount}+`, label: "Happy Clients" },
+  ];
+
   return (
     <div className="bg-white">
       {/* ── Hero ── */}
