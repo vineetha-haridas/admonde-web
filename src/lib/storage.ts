@@ -11,7 +11,9 @@ export async function saveFile(
   const ext = originalName.split(".").pop()?.toLowerCase() ?? "bin";
   const filename = `${randomUUID()}.${ext}`;
 
-  // Use Vercel Blob in production, local filesystem in development
+  // Vercel Blob when configured (works from any host, not just Vercel);
+  // otherwise local disk -- used for local dev and self-hosted/Docker
+  // deployments, where public/uploads should be a persistent volume.
   if (process.env.BLOB_READ_WRITE_TOKEN) {
     const { put } = await import("@vercel/blob");
     const blob = await put(`${folder}/${filename}`, file, { access: "public" });
