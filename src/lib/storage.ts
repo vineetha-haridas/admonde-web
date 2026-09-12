@@ -32,8 +32,13 @@ export async function saveFile(
     );
   }
 
+  // Deliberately NOT under public/ -- Next.js's production server snapshots
+  // which files exist under public/ at startup, so anything written there
+  // while the server is running stays invisible (404) until a restart.
+  // Served instead by src/app/uploads/[...path]/route.ts, which does a
+  // live filesystem read on every request.
   const fs = await import("fs/promises");
-  const uploadDir = path.join(process.cwd(), "public", "uploads", folder);
+  const uploadDir = path.join(process.cwd(), "uploads", folder);
   await fs.mkdir(uploadDir, { recursive: true });
   await fs.writeFile(path.join(uploadDir, filename), file);
   return `/uploads/${folder}/${filename}`;
