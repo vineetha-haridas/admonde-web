@@ -10,7 +10,7 @@ function BrandLogo({ name, logoUrl }: BrandClient) {
 
   return (
     <div
-      className="shrink-0 flex items-center justify-center w-28 h-14 sm:w-36 sm:h-16 lg:w-44 lg:h-20 3xl:w-52 3xl:h-24"
+      className="shrink-0 flex items-center justify-center w-32 h-16 sm:w-44 sm:h-20 lg:w-56 lg:h-28 3xl:w-64 3xl:h-32"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -26,7 +26,7 @@ function BrandLogo({ name, logoUrl }: BrandClient) {
         <img
           src={logoUrl}
           alt={name}
-          className="object-contain max-h-11 sm:max-h-14 lg:max-h-18 3xl:max-h-22 w-auto transition-all duration-300"
+          className="object-contain max-h-14 sm:max-h-18 lg:max-h-24 3xl:max-h-28 w-auto transition-all duration-300"
           style={{
             filter: hovered ? "grayscale(0) opacity(1)" : "grayscale(1) opacity(0.3)",
           }}
